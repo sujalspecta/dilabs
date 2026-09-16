@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import Pagination from 'react-paginate';
+import ReactPaginateComponent from 'react-paginate'; // Renamed import to apply Vite interop fix
 import BlogColumnData from '../../jsonData/BlogColumnData.json'
 import SingleBlog2Column from './SingleBlog2Column';
 import { useNavigate, useParams } from 'react-router-dom';
+
+// VITE CJS INTEROP WORKAROUND: Safely extract the default component function
+const Pagination = ReactPaginateComponent.default || ReactPaginateComponent;
 
 const Blog2ColumnContent = () => {
 
@@ -52,7 +55,7 @@ const Blog2ColumnContent = () => {
                         previousLabel={currentPage === 1 ? <i className='fas fa-ban'></i> : <i className='fas fa-angle-double-left'></i>}
                         nextLabel={currentPage === totalPages ? <i className='fas fa-ban'></i> : <i className='fas fa-angle-double-right'></i>}
                         breakLabel={'...'}
-                        pageCount={Math.ceil(BlogColumnData.length / itemsPerPage)}
+                        pageCount={totalPages}
                         marginPagesDisplayed={2}
                         pageRangeDisplayed={5}
                         onPageChange={handlePageClick}
@@ -62,6 +65,7 @@ const Blog2ColumnContent = () => {
                         pageLinkClassName={'page-link'}
                         previousLinkClassName={'page-link'}
                         nextLinkClassName={'page-link'}
+                        forcePage={currentPage - 1} // Correctly syncs the UI active tab highlighting
                     />
                 </div>
             </div>

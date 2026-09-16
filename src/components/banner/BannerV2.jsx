@@ -1,6 +1,11 @@
-import { HashLink as Link } from 'react-router-hash-link'
-import CountUp from 'react-countup/';
-import Animate from '../animation/Animate';
+import { HashLink } from 'react-router-hash-link';
+import CountUpComponent from 'react-countup'; // FIXED: Removed trailing slash
+import AnimateComponent from '../animation/Animate';
+
+// VITE CJS INTEROP WORKAROUND: Safely extract default functional component pointers
+const CountUp = CountUpComponent.default || CountUpComponent;
+const Animate = AnimateComponent.default || AnimateComponent;
+const Link = HashLink.default || HashLink;
 
 const BannerV2 = () => {
     return (

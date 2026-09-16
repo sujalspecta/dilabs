@@ -1,9 +1,14 @@
 import { useState } from 'react';
-import ModalVideo from 'react-modal-video';
-import { HashLink as Link } from 'react-router-hash-link'
-import WhyChooseUsV4Data from '../../jsonData/WhyChooseUsV4Data.json'
+import ModalVideoComponent from 'react-modal-video'; // Renamed import to apply patch
+import { HashLink } from 'react-router-hash-link';
+import WhyChooseUsV4Data from '../../jsonData/WhyChooseUsV4Data.json';
 import SingleChooseV3 from './SingleChooseV4';
-import Animate from '../animation/Animate';
+import AnimateComponent from '../animation/Animate';
+
+// VITE CJS INTEROP WORKAROUND: Safely extract default functional component pointers
+const ModalVideo = ModalVideoComponent.default || ModalVideoComponent;
+const Animate = AnimateComponent.default || AnimateComponent;
+const Link = HashLink.default || HashLink;
 
 const WhyChooseUsV4 = () => {
 

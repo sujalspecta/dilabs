@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import BlogPostData from '../../jsonData/BlogPostData.json'
+import BlogPostData from '../../jsonData/BlogPostData.json';
 import SingleBlogContentV1 from './SingleBlogContentV1';
-import Pagination from 'react-paginate';
+import ReactPaginateComponent from 'react-paginate'; // Renamed import to apply workaround
 import { useNavigate, useParams } from 'react-router-dom';
+
+// VITE CJS INTEROP WORKAROUND: Safely extract the default component function
+const Pagination = ReactPaginateComponent.default || ReactPaginateComponent;
 
 const BlogStandardContent = () => {
 
@@ -52,7 +55,7 @@ const BlogStandardContent = () => {
                                 previousLabel={currentPage === 1 ? <i className='fas fa-ban'></i> : <i className='fas fa-angle-double-left'></i>}
                                 nextLabel={currentPage === totalPages ? <i className='fas fa-ban'></i> : <i className='fas fa-angle-double-right'></i>}
                                 breakLabel={'...'}
-                                pageCount={Math.ceil(BlogPostData.length / itemsPerPage)}
+                                pageCount={totalPages}
                                 marginPagesDisplayed={2}
                                 pageRangeDisplayed={5}
                                 onPageChange={handlePageClick}
@@ -62,6 +65,7 @@ const BlogStandardContent = () => {
                                 pageLinkClassName={'page-link'}
                                 previousLinkClassName={'page-link'}
                                 nextLinkClassName={'page-link'}
+                                forcePage={currentPage - 1} // Syncs active CSS class state when clicking page buttons
                             />
                         </div>
                     </div>

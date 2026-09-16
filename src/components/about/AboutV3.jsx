@@ -1,6 +1,9 @@
 import React from 'react';
 import AboutV3ListData from '../../jsonData/AboutV3ListData.json'
-import CountUp from 'react-countup';
+import CountUpComponent from 'react-countup'; // Renamed import to apply patch
+
+// VITE CJS INTEROP WORKAROUND: Safely extract the default component function
+const CountUp = CountUpComponent.default || CountUpComponent;
 
 const AboutV3 = () => {
     return (

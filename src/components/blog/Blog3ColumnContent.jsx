@@ -1,8 +1,11 @@
-import React, { useEffect } from 'react';
-import Pagination from 'react-paginate';
+import React, { useEffect, useState } from 'react'; // FIXED: Added useState here
+import ReactPaginateComponent from 'react-paginate'; // FIXED: Renamed to apply Vite interop fix
 import BlogColumnData from '../../jsonData/BlogColumnData.json'
 import SingleBlog3Column from './SingleBlog3Column';
 import { useNavigate, useParams } from 'react-router-dom';
+
+// VITE CJS INTEROP WORKAROUND: Safely extract the default component function
+const Pagination = ReactPaginateComponent.default || ReactPaginateComponent;
 
 const Blog3ColumnContent = () => {
 
@@ -52,7 +55,7 @@ const Blog3ColumnContent = () => {
                         previousLabel={currentPage === 1 ? <i className='fas fa-ban'></i> : <i className='fas fa-angle-double-left'></i>}
                         nextLabel={currentPage === totalPages ? <i className='fas fa-ban'></i> : <i className='fas fa-angle-double-right'></i>}
                         breakLabel={'...'}
-                        pageCount={Math.ceil(BlogColumnData.length / itemsPerPage)}
+                        pageCount={totalPages}
                         marginPagesDisplayed={2}
                         pageRangeDisplayed={5}
                         onPageChange={handlePageClick}
@@ -62,6 +65,7 @@ const Blog3ColumnContent = () => {
                         pageLinkClassName={'page-link'}
                         previousLinkClassName={'page-link'}
                         nextLinkClassName={'page-link'}
+                        forcePage={currentPage - 1} // Syncs active CSS class state when clicking page buttons
                     />
                 </div>
             </div>

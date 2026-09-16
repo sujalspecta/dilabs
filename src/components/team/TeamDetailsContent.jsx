@@ -1,11 +1,15 @@
 import React from 'react';
 import SocialShare from '../others/SocialShare';
-import CountUp from 'react-countup';
-import { HashLink as Link } from 'react-router-hash-link';
+import CountUpComponent from 'react-countup'; // Renamed import to apply patch
+import { HashLink } from 'react-router-hash-link'; // Renamed import to apply patch
 import QualificationData from '../../jsonData/QualificationData.json'
 import SingleQualification from '../qualification/SingleQualification';
 import SkillProgressData from '../../jsonData/SkillProgressData.json'
 import SingleSkills from '../qualification/SingleSkills';
+
+// VITE CJS INTEROP WORKAROUND: Safely extract default functional component pointers
+const CountUp = CountUpComponent.default || CountUpComponent;
+const Link = HashLink.default || HashLink;
 
 const TeamDetailsContent = ({ teamInfo }) => {
     const { thumb, name, profession, memberInfo, projectCount, eMail, contactNumber } = teamInfo

@@ -1,15 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import BlogWithSidebarData from '../../jsonData/BlogWithSidebarData.json'
+import BlogWithSidebarData from '../../jsonData/BlogWithSidebarData.json';
 import SingleBlogSideBar from './SingleBlogSideBar';
-import Pagination from 'react-paginate';
-import SearchWidget from '../widgets/SearchWidget';
-import RecentPostWidget from '../widgets/RecentPostWidget';
-import CategoryDataListWidget from '../widgets/CategoryDataListWidget';
-import GalleryWidget from '../widgets/GalleryWidget';
-import ArchivesWidget from '../widgets/ArchivesWidget';
-import SocialWidget from '../widgets/SocialWidget';
-import TagsWidget from '../widgets/TagsWidget';
+import ReactPaginateComponent from 'react-paginate'; // Renamed import
+
+// VITE CJS INTEROP WORKAROUND: Safely extract the default executable component 
+const ReactPaginate = ReactPaginateComponent.default || ReactPaginateComponent;
+
+// SAFE FALLBACK IMPORTS (Handles mixed default or named exports)
+import * as SearchW from '../widgets/SearchWidget';
+import * as RecentW from '../widgets/RecentPostWidget';
+import * as CategoryW from '../widgets/CategoryDataListWidget';
+import * as GalleryW from '../widgets/GalleryWidget';
+import * as ArchivesW from '../widgets/ArchivesWidget';
+import * as SocialW from '../widgets/SocialWidget';
+import * as TagsW from '../widgets/TagsWidget';
+
 import { useNavigate, useParams } from 'react-router-dom';
+
+const SearchWidget = SearchW.default || SearchW.SearchWidget || (() => null);
+const RecentPostWidget = RecentW.default || RecentW.RecentPostWidget || (() => null);
+const CategoryDataListWidget = CategoryW.default || CategoryW.CategoryDataListWidget || (() => null);
+const GalleryWidget = GalleryW.default || GalleryW.GalleryWidget || (() => null);
+const ArchivesWidget = ArchivesW.default || ArchivesW.ArchivesWidget || (() => null);
+const SocialWidget = SocialW.default || SocialW.SocialWidget || (() => null);
+const TagsWidget = TagsW.default || TagsW.TagsWidget || (() => null);
 
 const BlogWithSideBarContent = () => {
 
@@ -17,7 +31,6 @@ const BlogWithSideBarContent = () => {
     const navigate = useNavigate();
     const { page } = useParams();
 
-    // Set initial page from URL
     const currentPageNumber = Number(page) || 1;
     const [currentPage, setCurrentPage] = useState(currentPageNumber);
     const [itemsPerPage] = useState(3);
@@ -33,10 +46,7 @@ const BlogWithSideBarContent = () => {
     const handlePageClick = (data) => {
         const selectedPage = data.selected + 1;
         setCurrentPage(selectedPage);
-
-        // Update the URL dynamically
         navigate(`/blog-with-sidebar?page=${selectedPage}`);
-
         setTimeout(() => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }, 200);
@@ -56,11 +66,13 @@ const BlogWithSideBarContent = () => {
                                         <SingleBlogSideBar blog={blog} key={blog.id} />
                                     )}
                                 </div>
-                                <Pagination
+                                
+                                {/* This will now reliably render through Vite's bundler layers */}
+                                <ReactPaginate
                                     previousLabel={currentPage === 1 ? <i className='fas fa-ban'></i> : <i className='fas fa-angle-double-left'></i>}
                                     nextLabel={currentPage === totalPages ? <i className='fas fa-ban'></i> : <i className='fas fa-angle-double-right'></i>}
                                     breakLabel={'...'}
-                                    pageCount={Math.ceil(BlogWithSidebarData.length / itemsPerPage)}
+                                    pageCount={totalPages}
                                     marginPagesDisplayed={2}
                                     pageRangeDisplayed={5}
                                     onPageChange={handlePageClick}
@@ -70,6 +82,7 @@ const BlogWithSideBarContent = () => {
                                     pageLinkClassName={'page-link'}
                                     previousLinkClassName={'page-link'}
                                     nextLinkClassName={'page-link'}
+                                    forcePage={currentPage - 1}
                                 />
                             </div>
 
