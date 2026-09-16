@@ -19,7 +19,6 @@ import Routers from './Routers';
 import ScrollUpBtn from './components/others/ScrollUpBtn';
 import Preloader from './components/others/Preloader';
 import { ToastContainer } from 'react-toastify';
-import { Helmet } from 'react-helmet';
 import { useState } from 'react';
 import { useEffect } from 'react';
 
@@ -38,10 +37,10 @@ function App() {
     <>
       {isLoading ? <Preloader /> :
         <div>
-          <Helmet>
+         
             <title>Dilabs Creative Digital Agency React Template</title>
             <link rel="shortcut icon" href="/img/others/favicon.ico"></link>
-          </Helmet>
+          
           <Routers />
           <ScrollUpBtn />
           <ToastContainer />
